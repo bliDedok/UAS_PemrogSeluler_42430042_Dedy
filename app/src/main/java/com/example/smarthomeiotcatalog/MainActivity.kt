@@ -1,5 +1,6 @@
 package com.example.smarthomeiotcatalog
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -36,32 +37,56 @@ class MainActivity : AppCompatActivity() {
         listViewIoT.adapter = adapter
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+            val input = etSearch.text.toString().trim()
+
+            if (input.isEmpty()) {
+                etSearch.error = "Masukkan nama modul terlebih dahulu"
+                Toast.makeText(this, "Input pencarian tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else if (input.length < 3) {
+                etSearch.error = "Minimal 3 karakter"
+                Toast.makeText(this, "Masukkan minimal 3 karakter", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Input valid, fitur pencarian dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnShowAll.setOnClickListener {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+            etSearch.setText("")
+            Toast.makeText(this, "Semua data ditampilkan", Toast.LENGTH_SHORT).show()
         }
 
         btnSortAZ.setOnClickListener {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fitur sorting A-Z dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
         }
 
         btnSortZA.setOnClickListener {
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fitur sorting Z-A dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
+        }
+
+        listViewIoT.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = iotList[position]
+
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("name", selectedItem.name)
+            intent.putExtra("category", selectedItem.category)
+            intent.putExtra("function", selectedItem.function)
+            intent.putExtra("voltage", selectedItem.voltage)
+            intent.putExtra("usage", selectedItem.usage)
+
+            startActivity(intent)
         }
     }
 
     private fun loadPreviewData() {
-        iotList.add(IoTItem("ESP32", "Mikrokontroler"))
-        iotList.add(IoTItem("NodeMCU ESP8266", "Mikrokontroler"))
-        iotList.add(IoTItem("DHT11", "Sensor"))
-        iotList.add(IoTItem("DHT22", "Sensor"))
-        iotList.add(IoTItem("PIR Motion Sensor", "Sensor"))
-        iotList.add(IoTItem("Relay Module", "Aktuator"))
-        iotList.add(IoTItem("MQ-2 Gas Sensor", "Sensor"))
-        iotList.add(IoTItem("RFID RC522", "Identifikasi"))
-        iotList.add(IoTItem("Ultrasonic HC-SR04", "Sensor"))
-        iotList.add(IoTItem("Buzzer Module", "Output"))
+        iotList.add(IoTItem("ESP32", "Mikrokontroler", "Mengontrol sistem IoT dan koneksi WiFi", "3.3V", "Smart lamp dan monitoring rumah"))
+        iotList.add(IoTItem("NodeMCU ESP8266", "Mikrokontroler", "Board IoT dengan WiFi", "3.3V", "Kontrol perangkat rumah"))
+        iotList.add(IoTItem("DHT11", "Sensor", "Mengukur suhu dan kelembapan", "3.3V - 5V", "Monitoring suhu ruangan"))
+        iotList.add(IoTItem("DHT22", "Sensor", "Mengukur suhu dan kelembapan lebih akurat", "3.3V - 6V", "Smart weather station"))
+        iotList.add(IoTItem("PIR Motion Sensor", "Sensor", "Mendeteksi gerakan manusia", "5V", "Lampu otomatis dan alarm"))
+        iotList.add(IoTItem("Relay Module", "Aktuator", "Menghubungkan mikrokontroler ke perangkat listrik", "5V", "Kontrol lampu dan kipas"))
+        iotList.add(IoTItem("MQ-2 Gas Sensor", "Sensor", "Mendeteksi asap dan gas", "5V", "Peringatan kebocoran gas"))
+        iotList.add(IoTItem("RFID RC522", "Identifikasi", "Membaca kartu RFID", "3.3V", "Smart door lock"))
+        iotList.add(IoTItem("Ultrasonic HC-SR04", "Sensor", "Mengukur jarak objek", "5V", "Deteksi jarak pintu atau objek"))
+        iotList.add(IoTItem("Buzzer Module", "Output", "Menghasilkan bunyi notifikasi", "3.3V - 5V", "Alarm rumah"))
     }
 }

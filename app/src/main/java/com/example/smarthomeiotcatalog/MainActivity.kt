@@ -16,8 +16,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnSortAZ: Button
     private lateinit var btnSortZA: Button
     private lateinit var listViewIoT: ListView
-
     private lateinit var adapter: IoTPreviewAdapter
+
+    private val originalList = mutableListOf<IoTItem>()
+
     private val iotList = mutableListOf<IoTItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         loadPreviewData()
 
+        iotList.clear()
+        iotList.addAll(originalList)
+
         adapter = IoTPreviewAdapter(this, iotList)
         listViewIoT.adapter = adapter
 
@@ -46,21 +51,48 @@ class MainActivity : AppCompatActivity() {
                 etSearch.error = "Minimal 3 karakter"
                 Toast.makeText(this, "Masukkan minimal 3 karakter", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Input valid, fitur pencarian dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
+                val searchResult = linearSearch(input)
+
+                iotList.clear()
+                iotList.addAll(searchResult)
+                adapter.notifyDataSetChanged()
+
+                if (searchResult.isEmpty()) {
+                    Toast.makeText(this, "Data tidak ditemukan", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "${searchResult.size} data ditemukan", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         btnShowAll.setOnClickListener {
             etSearch.setText("")
+
+            iotList.clear()
+            iotList.addAll(originalList)
+            adapter.notifyDataSetChanged()
+
             Toast.makeText(this, "Semua data ditampilkan", Toast.LENGTH_SHORT).show()
         }
 
         btnSortAZ.setOnClickListener {
-            Toast.makeText(this, "Fitur sorting A-Z dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
+            val sortedList = bubbleSortAZ(iotList)
+
+            iotList.clear()
+            iotList.addAll(sortedList)
+            adapter.notifyDataSetChanged()
+
+            Toast.makeText(this, "Data diurutkan dari A-Z", Toast.LENGTH_SHORT).show()
         }
 
         btnSortZA.setOnClickListener {
-            Toast.makeText(this, "Fitur sorting Z-A dikerjakan di Minggu 3", Toast.LENGTH_SHORT).show()
+            val sortedList = bubbleSortZA(iotList)
+
+            iotList.clear()
+            iotList.addAll(sortedList)
+            adapter.notifyDataSetChanged()
+
+            Toast.makeText(this, "Data diurutkan dari Z-A", Toast.LENGTH_SHORT).show()
         }
 
         listViewIoT.setOnItemClickListener { _, _, position, _ ->
@@ -78,15 +110,152 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadPreviewData() {
-        iotList.add(IoTItem("ESP32", "Mikrokontroler", "Mengontrol sistem IoT dan koneksi WiFi", "3.3V", "Smart lamp dan monitoring rumah"))
-        iotList.add(IoTItem("NodeMCU ESP8266", "Mikrokontroler", "Board IoT dengan WiFi", "3.3V", "Kontrol perangkat rumah"))
-        iotList.add(IoTItem("DHT11", "Sensor", "Mengukur suhu dan kelembapan", "3.3V - 5V", "Monitoring suhu ruangan"))
-        iotList.add(IoTItem("DHT22", "Sensor", "Mengukur suhu dan kelembapan lebih akurat", "3.3V - 6V", "Smart weather station"))
-        iotList.add(IoTItem("PIR Motion Sensor", "Sensor", "Mendeteksi gerakan manusia", "5V", "Lampu otomatis dan alarm"))
-        iotList.add(IoTItem("Relay Module", "Aktuator", "Menghubungkan mikrokontroler ke perangkat listrik", "5V", "Kontrol lampu dan kipas"))
-        iotList.add(IoTItem("MQ-2 Gas Sensor", "Sensor", "Mendeteksi asap dan gas", "5V", "Peringatan kebocoran gas"))
-        iotList.add(IoTItem("RFID RC522", "Identifikasi", "Membaca kartu RFID", "3.3V", "Smart door lock"))
-        iotList.add(IoTItem("Ultrasonic HC-SR04", "Sensor", "Mengukur jarak objek", "5V", "Deteksi jarak pintu atau objek"))
-        iotList.add(IoTItem("Buzzer Module", "Output", "Menghasilkan bunyi notifikasi", "3.3V - 5V", "Alarm rumah"))
+        originalList.add(
+            IoTItem(
+                "ESP32",
+                "Mikrokontroler",
+                "Mengontrol sistem IoT dan koneksi WiFi",
+                "3.3V",
+                "Smart lamp dan monitoring rumah"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "NodeMCU ESP8266",
+                "Mikrokontroler",
+                "Board IoT dengan WiFi",
+                "3.3V",
+                "Kontrol perangkat rumah"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "DHT11",
+                "Sensor",
+                "Mengukur suhu dan kelembapan",
+                "3.3V - 5V",
+                "Monitoring suhu ruangan"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "DHT22",
+                "Sensor",
+                "Mengukur suhu dan kelembapan lebih akurat",
+                "3.3V - 6V",
+                "Smart weather station"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "PIR Motion Sensor",
+                "Sensor",
+                "Mendeteksi gerakan manusia",
+                "5V",
+                "Lampu otomatis dan alarm"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "Relay Module",
+                "Aktuator",
+                "Menghubungkan mikrokontroler ke perangkat listrik",
+                "5V",
+                "Kontrol lampu dan kipas"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "MQ-2 Gas Sensor",
+                "Sensor",
+                "Mendeteksi asap dan gas",
+                "5V",
+                "Peringatan kebocoran gas"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "RFID RC522",
+                "Identifikasi",
+                "Membaca kartu RFID",
+                "3.3V",
+                "Smart door lock"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "Ultrasonic HC-SR04",
+                "Sensor",
+                "Mengukur jarak objek",
+                "5V",
+                "Deteksi jarak pintu atau objek"
+            )
+        )
+
+        originalList.add(
+            IoTItem(
+                "Buzzer Module",
+                "Output",
+                "Menghasilkan bunyi notifikasi",
+                "3.3V - 5V",
+                "Alarm rumah"
+            )
+        )
+    }
+
+    private fun linearSearch(keyword: String): MutableList<IoTItem> {
+        val result = mutableListOf<IoTItem>()
+
+        for (item in originalList) {
+            if (
+                item.name.contains(keyword, ignoreCase = true) ||
+                item.category.contains(keyword, ignoreCase = true) ||
+                item.function.contains(keyword, ignoreCase = true)
+            ) {
+                result.add(item)
+            }
+        }
+
+        return result
+    }
+
+    private fun bubbleSortAZ(data: List<IoTItem>): MutableList<IoTItem> {
+        val sortedList = data.toMutableList()
+
+        for (i in 0 until sortedList.size - 1) {
+            for (j in 0 until sortedList.size - i - 1) {
+                if (sortedList[j].name.compareTo(sortedList[j + 1].name, ignoreCase = true) > 0) {
+                    val temp = sortedList[j]
+                    sortedList[j] = sortedList[j + 1]
+                    sortedList[j + 1] = temp
+                }
+            }
+        }
+
+        return sortedList
+    }
+
+    private fun bubbleSortZA(data: List<IoTItem>): MutableList<IoTItem> {
+        val sortedList = data.toMutableList()
+
+        for (i in 0 until sortedList.size - 1) {
+            for (j in 0 until sortedList.size - i - 1) {
+                if (sortedList[j].name.compareTo(sortedList[j + 1].name, ignoreCase = true) < 0) {
+                    val temp = sortedList[j]
+                    sortedList[j] = sortedList[j + 1]
+                    sortedList[j + 1] = temp
+                }
+            }
+        }
+
+        return sortedList
     }
 }

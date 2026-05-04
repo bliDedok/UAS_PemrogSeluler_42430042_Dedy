@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("function", selectedItem.function)
                     intent.putExtra("voltage", selectedItem.voltage)
                     intent.putExtra("usage", selectedItem.usage)
-
+                    intent.putExtra("imageResId", selectedItem.imageResId)
                     startActivity(intent)
                 } catch (e: Exception) {
                     Toast.makeText(this, "Terjadi kesalahan saat membuka detail", Toast.LENGTH_SHORT).show()
@@ -169,7 +169,8 @@ class MainActivity : AppCompatActivity() {
                     "Mikrokontroler",
                     "Mengontrol sistem IoT dan koneksi WiFi",
                     "3.3V",
-                    "Smart lamp dan monitoring rumah"
+                    "Smart lamp dan monitoring rumah",
+                    R.drawable.esp32
                 )
             )
 
@@ -179,7 +180,8 @@ class MainActivity : AppCompatActivity() {
                     "Mikrokontroler",
                     "Board IoT dengan WiFi",
                     "3.3V",
-                    "Kontrol perangkat rumah"
+                    "Kontrol perangkat rumah",
+                    R.drawable.nodemcu
                 )
             )
 
@@ -189,7 +191,8 @@ class MainActivity : AppCompatActivity() {
                     "Sensor",
                     "Mengukur suhu dan kelembapan",
                     "3.3V - 5V",
-                    "Monitoring suhu ruangan"
+                    "Monitoring suhu ruangan",
+                    R.drawable.dht11
                 )
             )
 
@@ -199,7 +202,8 @@ class MainActivity : AppCompatActivity() {
                     "Sensor",
                     "Mengukur suhu dan kelembapan lebih akurat",
                     "3.3V - 6V",
-                    "Smart weather station"
+                    "Smart weather station",
+                    R.drawable.dht22
                 )
             )
 
@@ -209,7 +213,8 @@ class MainActivity : AppCompatActivity() {
                     "Sensor",
                     "Mendeteksi gerakan manusia",
                     "5V",
-                    "Lampu otomatis dan alarm"
+                    "Lampu otomatis dan alarm",
+                    R.drawable.pir_sensor
                 )
             )
 
@@ -219,7 +224,8 @@ class MainActivity : AppCompatActivity() {
                     "Aktuator",
                     "Menghubungkan mikrokontroler ke perangkat listrik",
                     "5V",
-                    "Kontrol lampu dan kipas"
+                    "Kontrol lampu dan kipas",
+                    R.drawable.relay_module
                 )
             )
 
@@ -229,7 +235,8 @@ class MainActivity : AppCompatActivity() {
                     "Sensor",
                     "Mendeteksi asap dan gas",
                     "5V",
-                    "Peringatan kebocoran gas"
+                    "Peringatan kebocoran gas",
+                    R.drawable.mq2_sensor
                 )
             )
 
@@ -239,7 +246,8 @@ class MainActivity : AppCompatActivity() {
                     "Identifikasi",
                     "Membaca kartu RFID",
                     "3.3V",
-                    "Smart door lock"
+                    "Smart door lock",
+                    R.drawable.rfid_rc522
                 )
             )
 
@@ -249,7 +257,8 @@ class MainActivity : AppCompatActivity() {
                     "Sensor",
                     "Mengukur jarak objek",
                     "5V",
-                    "Deteksi jarak pintu atau objek"
+                    "Deteksi jarak pintu atau objek",
+                    R.drawable.ultrasonic_sensor
                 )
             )
 
@@ -259,7 +268,8 @@ class MainActivity : AppCompatActivity() {
                     "Output",
                     "Menghasilkan bunyi notifikasi",
                     "3.3V - 5V",
-                    "Alarm rumah"
+                    "Alarm rumah",
+                    R.drawable.buzzer_module
                 )
             )
 

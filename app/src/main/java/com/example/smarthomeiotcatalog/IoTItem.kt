@@ -5,5 +5,6 @@ data class IoTItem(
     val category: String,
     val function: String,
     val voltage: String,
-    val usage: String
+    val usage: String,
+    val imageResId: Int
 )

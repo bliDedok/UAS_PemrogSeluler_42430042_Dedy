@@ -3,7 +3,7 @@ package com.example.smarthomeiotcatalog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import android.widget.TextView
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var etSearch: EditText
-    private lateinit var btnSearch: Button
-    private lateinit var btnShowAll: Button
-    private lateinit var btnSortAZ: Button
-    private lateinit var btnSortZA: Button
+    private lateinit var btnSearch: TextView
+    private lateinit var btnShowAll: TextView
+    private lateinit var btnSortAZ: TextView
+    private lateinit var btnSortZA: TextView
     private lateinit var listViewIoT: ListView
     private lateinit var adapter: IoTPreviewAdapter
 
